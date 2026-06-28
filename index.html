@@ -1496,4 +1496,12 @@ async function submitNewJob() {
 
   // Flash the new row briefly
   setTimeout(() => {
-    const firstRow =
+    const firstRow = document.querySelector('#table-body tr');
+    if (firstRow) { firstRow.style.background = '#1e3a1e'; setTimeout(() => firstRow.style.background = '', 1500); }
+  }, 100);
+}
+
+</script>
+
+
+</body></html>
