@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<!-- saved from url=(0045)file:///C:/Users/LowDe/Downloads/index_1.html -->
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
+<html lang="en">
+<head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LOW Service Portal</title>
 <style>
@@ -279,17 +279,17 @@
       <div class="pin-dot" id="d3"></div>
     </div>
     <div class="pin-pad">
-      <button class="pin-btn" onclick="pinPress(&#39;1&#39;)">1</button>
-      <button class="pin-btn" onclick="pinPress(&#39;2&#39;)">2</button>
-      <button class="pin-btn" onclick="pinPress(&#39;3&#39;)">3</button>
-      <button class="pin-btn" onclick="pinPress(&#39;4&#39;)">4</button>
-      <button class="pin-btn" onclick="pinPress(&#39;5&#39;)">5</button>
-      <button class="pin-btn" onclick="pinPress(&#39;6&#39;)">6</button>
-      <button class="pin-btn" onclick="pinPress(&#39;7&#39;)">7</button>
-      <button class="pin-btn" onclick="pinPress(&#39;8&#39;)">8</button>
-      <button class="pin-btn" onclick="pinPress(&#39;9&#39;)">9</button>
+      <button class="pin-btn" onclick="pinPress('1')">1</button>
+      <button class="pin-btn" onclick="pinPress('2')">2</button>
+      <button class="pin-btn" onclick="pinPress('3')">3</button>
+      <button class="pin-btn" onclick="pinPress('4')">4</button>
+      <button class="pin-btn" onclick="pinPress('5')">5</button>
+      <button class="pin-btn" onclick="pinPress('6')">6</button>
+      <button class="pin-btn" onclick="pinPress('7')">7</button>
+      <button class="pin-btn" onclick="pinPress('8')">8</button>
+      <button class="pin-btn" onclick="pinPress('9')">9</button>
       <button class="pin-btn del" onclick="pinClear()">CLR</button>
-      <button class="pin-btn" onclick="pinPress(&#39;0&#39;)">0</button>
+      <button class="pin-btn" onclick="pinPress('0')">0</button>
       <button class="pin-btn del" onclick="pinBack()">⌫</button>
     </div>
     <div class="login-error" id="login-error"></div>
@@ -311,9 +311,9 @@
   </div>
 
   <div class="nav-tabs">
-    <div class="nav-tab active" onclick="switchTab(&#39;jobs&#39;)" id="tab-jobs">Work Orders</div>
-    <div class="nav-tab" onclick="switchTab(&#39;import&#39;)" id="tab-import" style="display:none">Import CSV</div>
-    <div class="nav-tab" onclick="switchTab(&#39;admin&#39;)" id="tab-admin" style="display:none">Admin</div>
+    <div class="nav-tab active" onclick="switchTab('jobs')" id="tab-jobs">Work Orders</div>
+    <div class="nav-tab" onclick="switchTab('import')" id="tab-import" style="display:none">Import CSV</div>
+    <div class="nav-tab" onclick="switchTab('admin')" id="tab-admin" style="display:none">Admin</div>
   </div>
 
   <!-- JOBS TAB -->
@@ -351,17 +351,17 @@
       <table>
         <thead>
           <tr>
-            <th onclick="sortBy(&#39;type&#39;)">Type</th>
-            <th onclick="sortBy(&#39;building&#39;)">Building</th>
-            <th onclick="sortBy(&#39;city&#39;)">City / Zone</th>
-            <th onclick="sortBy(&#39;wd&#39;)">W/D</th>
-            <th onclick="sortBy(&#39;task&#39;)" style="min-width:200px">Task</th>
-            <th onclick="sortBy(&#39;contact&#39;)">Contact</th>
-            <th onclick="sortBy(&#39;assignDate&#39;)">Assigned</th>
-            <th onclick="sortBy(&#39;progress&#39;)">Status</th>
-            <th onclick="sortBy(&#39;initials&#39;)">Tech</th>
-            <th onclick="sortBy(&#39;workOrder&#39;)">Work Order</th>
-            <th onclick="sortBy(&#39;completeDate&#39;)">Completed</th>
+            <th onclick="sortBy('type')">Type</th>
+            <th onclick="sortBy('building')">Building</th>
+            <th onclick="sortBy('city')">City / Zone</th>
+            <th onclick="sortBy('wd')">W/D</th>
+            <th onclick="sortBy('task')" style="min-width:200px">Task</th>
+            <th onclick="sortBy('contact')">Contact</th>
+            <th onclick="sortBy('assignDate')">Assigned</th>
+            <th onclick="sortBy('progress')">Status</th>
+            <th onclick="sortBy('initials')">Tech</th>
+            <th onclick="sortBy('workOrder')">Work Order</th>
+            <th onclick="sortBy('completeDate')">Completed</th>
             <th></th>
           </tr>
         </thead>
@@ -378,7 +378,7 @@
     <div class="import-card">
       <h3>Import from Google Sheets CSV</h3>
       <p>Export your sheet as CSV (File → Download → CSV), then upload it here. All records will be sent to Airtable.</p>
-      <div class="drop-zone" id="drop-zone" onclick="document.getElementById(&#39;csv-file&#39;).click()">
+      <div class="drop-zone" id="drop-zone" onclick="document.getElementById('csv-file').click()">
         <div style="font-size:32px">📄</div>
         <p><strong>Click to choose a CSV file</strong></p>
         <p>or drag and drop it here</p>
@@ -709,9 +709,7 @@
 // ══════════════════════════════════════════════
 // Credentials are stored securely in Netlify environment variables.
 // The app talks to /.netlify/functions/airtable instead of Airtable directly.
-const AIRTABLE_API_KEY = 'MANAGED_BY_NETLIFY';
-const AIRTABLE_BASE_ID = 'MANAGED_BY_NETLIFY';
-const AIRTABLE_TABLE   = 'ServiceJobs';
+// Google Sheets backend — see SCRIPT_URL below
 
 // ══════════════════════════════════════════════
 //  USER ACCOUNTS  (stored in localStorage so
@@ -811,41 +809,120 @@ function switchTab(tab) {
 }
 
 // ══════════════════════════════════════════════
-//  AIRTABLE HELPERS
+//  GOOGLE SHEETS API
 // ══════════════════════════════════════════════
-// Direct Airtable API calls
-const AIRTABLE_API_KEY = 'patkhgeMgonjOgwiL.5a04178e8581ce23144b05dfa44cffb2a07d88c62650050b604a08fff9fbd7b5';
-const AIRTABLE_BASE_ID = 'appgi6z4kD9rwagYc';
-const AIRTABLE_TABLE   = 'ServiceJobs';
-const AT_BASE = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(AIRTABLE_TABLE)}`;
+// Paste your Apps Script Web App URL below after deploying
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwXd7b-0LmERu0VDapYIcWqC2QfsgowwZDMFiW4EZqGYWjBTCSXrPY5Qy2GTJWQjxw/exec';
 
-async function atFetch(path='', opts={}) {
-  let url = AT_BASE;
-  if (path && path.startsWith('/')) {
-    url = AT_BASE + path;
-  } else if (path && path.startsWith('?')) {
-    url = AT_BASE + path;
-  }
-  const r = await fetch(url, {
-    headers: {
-      'Authorization': `Bearer ${AIRTABLE_API_KEY}`,
-      'Content-Type': 'application/json',
-    },
-    mode: 'cors',
-    ...opts
+// Column mapping — matches your Google Sheet headers exactly
+const COL = {
+  type:         '',        // col A (no header)
+  building:     'Building',
+  address:      'Address',
+  city:         'City',
+  zip:          'Zip',
+  zone:         'N/S',
+  wd:           'W D',
+  machineNum:   '#',
+  task:         'Task',
+  contactName:  'Name',
+  contactInfo:  'Contact',
+  assignDate:   'Assign date',
+  days:         'Days',
+  progress:     'Progress',
+  workOrder:    'Work Order',
+  initials:     'Initials',
+  completeDate: 'Complete Date',
+  salesOrder:   'Sales Order',
+  notes:        '',
+};
+
+// Convert sheet row to app record
+function rowToRecord(row, rowIndex) {
+  return {
+    id: String(rowIndex),
+    fields: {
+      _rowIndex:    rowIndex,
+      type:         row[''] || row[Object.keys(row)[0]] || '',
+      building:     row['Building']      || '',
+      address:      row['Address']       || '',
+      city:         row['City']          || '',
+      zip:          row['Zip']           || '',
+      zone:         row['N/S']           || '',
+      wd:           row['W D']           || '',
+      machineNum:   row['#']             || '',
+      task:         row['Task']          || '',
+      contactName:  row['Name']          || '',
+      contactInfo:  row['Contact']       || '',
+      assignDate:   row['Assign date']   || '',
+      days:         row['Days']          || '',
+      progress:     row['Progress']      || 'Not started',
+      workOrder:    row['Work Order']    || '',
+      initials:     row['Initials']      || '',
+      completeDate: row['Complete Date'] || '',
+      salesOrder:   row['Sales Order']   || '',
+      notes:        row['notes']         || '',
+    }
+  };
+}
+
+// Convert app fields back to sheet row format
+function fieldsToRow(fields) {
+  return {
+    '':              fields.type         || '',
+    'Building':      fields.building     || '',
+    'Address':       fields.address      || '',
+    'City':          fields.city         || '',
+    'Zip':           fields.zip          || '',
+    'N/S':           fields.zone         || '',
+    'W D':           fields.wd           || '',
+    '#':             fields.machineNum   || '',
+    'Task':          fields.task         || '',
+    'Name':          fields.contactName  || '',
+    'Contact':       fields.contactInfo  || '',
+    'Assign date':   fields.assignDate   || '',
+    'Days':          fields.days         || '',
+    'Progress':      fields.progress     || '',
+    'Work Order':    fields.workOrder    || '',
+    'Initials':      fields.initials     || '',
+    'Complete Date': fields.completeDate || '',
+    'Sales Order':   fields.salesOrder   || '',
+    '_rowIndex':     fields._rowIndex,
+  };
+}
+
+function apiCall(action, data) {
+  return new Promise((resolve, reject) => {
+    const cbName = 'cb_' + Date.now() + '_' + Math.floor(Math.random()*10000);
+    let url = SCRIPT_URL + '?action=' + action + '&callback=' + cbName;
+    if (data) url += '&data=' + encodeURIComponent(JSON.stringify(data));
+
+    window[cbName] = function(result) {
+      delete window[cbName];
+      document.body.removeChild(script);
+      resolve(result);
+    };
+
+    const script = document.createElement('script');
+    script.src = url;
+    script.onerror = () => {
+      delete window[cbName];
+      document.body.removeChild(script);
+      reject(new Error('Script load failed'));
+    };
+    document.body.appendChild(script);
   });
-  return r.json();
 }
 
 async function loadRecords() {
-  // Always use live Airtable via Netlify function
-  let all = [], offset = '';
-  do {
-    const res = await atFetch('?pageSize=100' + (offset ? '&offset='+offset : ''));
-    if (res.records) all = all.concat(res.records);
-    offset = res.offset || '';
-  } while (offset);
-  allRecords = all;
+  try {
+    const res = await apiCall('getAll');
+    if (res.records) {
+      allRecords = res.records.map((row, i) => rowToRecord(row, row._rowIndex || i + 2));
+    }
+  } catch(e) {
+    console.error('Load error:', e);
+  }
   renderTable();
 }
 
@@ -880,16 +957,14 @@ async function saveRecord() {
     });
   }
 
-  if (currentRecordId && !currentRecordId.startsWith('local_')) {
-    await atFetch('/'+currentRecordId, {
-      method: 'PATCH',
-      body: JSON.stringify({ fields })
-    });
-  }
-
-  // Update local state
+  // Update local state first for instant UI feedback
   const idx = allRecords.findIndex(r => r.id === currentRecordId);
   if (idx > -1) Object.assign(allRecords[idx].fields, fields);
+
+  // Save to Google Sheet
+  const rowData = fieldsToRow({ ...allRecords[idx]?.fields, ...fields });
+  await apiCall('update', rowData);
+
   const ss = document.getElementById('save-status');
   ss.style.display = 'flex';
   btn.textContent = 'Save Changes'; btn.disabled = false;
@@ -1147,16 +1222,14 @@ async function parseAndImport(text) {
   let done = 0;
   for (let i = 0; i < records.length; i += 10) {
     const batch = records.slice(i, i+10);
-    const res = await atFetch('', {
-      method: 'POST',
-      body: JSON.stringify({ records: batch.map(f => ({ fields: f })) })
-    });
-    done += batch.length;
+    // Send each record to Google Sheet
+    for (const rec of batch) {
+      await apiCall('add', fieldsToRow(rec));
+      done++;
+    }
     fill.style.width = Math.round(done/records.length*100) + '%';
     stat.textContent = `Importing… ${done} / ${records.length}`;
-    const batchOk = res.records ? res.records.length : 0;
-    const batchErr = res.error ? ` — ${res.error}: ${res.message||''}` : (!batchOk ? ' — unknown error' : '');
-    log.textContent += `Batch ${Math.ceil((i+1)/10)}: ${batchOk ? batchOk + ' created' : 'error' + batchErr}\n`;
+    log.textContent += `Batch ${Math.ceil((i+1)/10)}: ${batch.length} added\n`;
     log.scrollTop = log.scrollHeight;
     await new Promise(r => setTimeout(r, 250));
   }
@@ -1406,12 +1479,12 @@ async function submitNewJob() {
     notes:       document.getElementById('nj-notes').value.trim(),
   };
 
-  let newId;
-  const res = await atFetch('', {
-    method: 'POST',
-    body: JSON.stringify({ records: [{ fields }] })
-  });
-  newId = res.records && res.records[0] ? res.records[0].id : 'local_' + Date.now();
+  // Add to Google Sheet
+  const rowData = fieldsToRow(fields);
+  const res = await apiCall('add', rowData);
+  const newRowIndex = res.rowIndex || Date.now();
+  const newId = String(newRowIndex);
+  fields._rowIndex = newRowIndex;
 
   allRecords.unshift({ id: newId, fields });
 
@@ -1429,6 +1502,5 @@ async function submitNewJob() {
 }
 
 </script>
-
-
-</body></html>
+</body>
+</html>
