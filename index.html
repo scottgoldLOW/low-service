@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
+<!-- saved from url=(0045)file:///C:/Users/LowDe/Downloads/index_1.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LOW Service Portal</title>
 <style>
@@ -279,17 +279,17 @@
       <div class="pin-dot" id="d3"></div>
     </div>
     <div class="pin-pad">
-      <button class="pin-btn" onclick="pinPress('1')">1</button>
-      <button class="pin-btn" onclick="pinPress('2')">2</button>
-      <button class="pin-btn" onclick="pinPress('3')">3</button>
-      <button class="pin-btn" onclick="pinPress('4')">4</button>
-      <button class="pin-btn" onclick="pinPress('5')">5</button>
-      <button class="pin-btn" onclick="pinPress('6')">6</button>
-      <button class="pin-btn" onclick="pinPress('7')">7</button>
-      <button class="pin-btn" onclick="pinPress('8')">8</button>
-      <button class="pin-btn" onclick="pinPress('9')">9</button>
+      <button class="pin-btn" onclick="pinPress(&#39;1&#39;)">1</button>
+      <button class="pin-btn" onclick="pinPress(&#39;2&#39;)">2</button>
+      <button class="pin-btn" onclick="pinPress(&#39;3&#39;)">3</button>
+      <button class="pin-btn" onclick="pinPress(&#39;4&#39;)">4</button>
+      <button class="pin-btn" onclick="pinPress(&#39;5&#39;)">5</button>
+      <button class="pin-btn" onclick="pinPress(&#39;6&#39;)">6</button>
+      <button class="pin-btn" onclick="pinPress(&#39;7&#39;)">7</button>
+      <button class="pin-btn" onclick="pinPress(&#39;8&#39;)">8</button>
+      <button class="pin-btn" onclick="pinPress(&#39;9&#39;)">9</button>
       <button class="pin-btn del" onclick="pinClear()">CLR</button>
-      <button class="pin-btn" onclick="pinPress('0')">0</button>
+      <button class="pin-btn" onclick="pinPress(&#39;0&#39;)">0</button>
       <button class="pin-btn del" onclick="pinBack()">⌫</button>
     </div>
     <div class="login-error" id="login-error"></div>
@@ -311,9 +311,9 @@
   </div>
 
   <div class="nav-tabs">
-    <div class="nav-tab active" onclick="switchTab('jobs')" id="tab-jobs">Work Orders</div>
-    <div class="nav-tab" onclick="switchTab('import')" id="tab-import" style="display:none">Import CSV</div>
-    <div class="nav-tab" onclick="switchTab('admin')" id="tab-admin" style="display:none">Admin</div>
+    <div class="nav-tab active" onclick="switchTab(&#39;jobs&#39;)" id="tab-jobs">Work Orders</div>
+    <div class="nav-tab" onclick="switchTab(&#39;import&#39;)" id="tab-import" style="display:none">Import CSV</div>
+    <div class="nav-tab" onclick="switchTab(&#39;admin&#39;)" id="tab-admin" style="display:none">Admin</div>
   </div>
 
   <!-- JOBS TAB -->
@@ -351,17 +351,17 @@
       <table>
         <thead>
           <tr>
-            <th onclick="sortBy('type')">Type</th>
-            <th onclick="sortBy('building')">Building</th>
-            <th onclick="sortBy('city')">City / Zone</th>
-            <th onclick="sortBy('wd')">W/D</th>
-            <th onclick="sortBy('task')" style="min-width:200px">Task</th>
-            <th onclick="sortBy('contact')">Contact</th>
-            <th onclick="sortBy('assignDate')">Assigned</th>
-            <th onclick="sortBy('progress')">Status</th>
-            <th onclick="sortBy('initials')">Tech</th>
-            <th onclick="sortBy('workOrder')">Work Order</th>
-            <th onclick="sortBy('completeDate')">Completed</th>
+            <th onclick="sortBy(&#39;type&#39;)">Type</th>
+            <th onclick="sortBy(&#39;building&#39;)">Building</th>
+            <th onclick="sortBy(&#39;city&#39;)">City / Zone</th>
+            <th onclick="sortBy(&#39;wd&#39;)">W/D</th>
+            <th onclick="sortBy(&#39;task&#39;)" style="min-width:200px">Task</th>
+            <th onclick="sortBy(&#39;contact&#39;)">Contact</th>
+            <th onclick="sortBy(&#39;assignDate&#39;)">Assigned</th>
+            <th onclick="sortBy(&#39;progress&#39;)">Status</th>
+            <th onclick="sortBy(&#39;initials&#39;)">Tech</th>
+            <th onclick="sortBy(&#39;workOrder&#39;)">Work Order</th>
+            <th onclick="sortBy(&#39;completeDate&#39;)">Completed</th>
             <th></th>
           </tr>
         </thead>
@@ -378,7 +378,7 @@
     <div class="import-card">
       <h3>Import from Google Sheets CSV</h3>
       <p>Export your sheet as CSV (File → Download → CSV), then upload it here. All records will be sent to Airtable.</p>
-      <div class="drop-zone" id="drop-zone" onclick="document.getElementById('csv-file').click()">
+      <div class="drop-zone" id="drop-zone" onclick="document.getElementById(&#39;csv-file&#39;).click()">
         <div style="font-size:32px">📄</div>
         <p><strong>Click to choose a CSV file</strong></p>
         <p>or drag and drop it here</p>
@@ -813,22 +813,26 @@ function switchTab(tab) {
 // ══════════════════════════════════════════════
 //  AIRTABLE HELPERS
 // ══════════════════════════════════════════════
-// All Airtable calls go through the Netlify function to avoid CORS/403 issues
-const PROXY = '/.netlify/functions/airtable';
+// Direct Airtable API calls
+const AIRTABLE_API_KEY = 'patkhgeMgonjOgwiL.5a04178e8581ce23144b05dfa44cffb2a07d88c62650050b604a08fff9fbd7b5';
+const AIRTABLE_BASE_ID = 'appgi6z4kD9rwagYc';
+const AIRTABLE_TABLE   = 'ServiceJobs';
+const AT_BASE = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(AIRTABLE_TABLE)}`;
 
 async function atFetch(path='', opts={}) {
-  // Convert path like '/recXXX' to '?recordId=recXXX'
-  let url = PROXY;
+  let url = AT_BASE;
   if (path && path.startsWith('/')) {
-    const recordId = path.slice(1).split('?')[0];
-    const rest = path.includes('?') ? '&' + path.split('?')[1] : '';
-    url = PROXY + '?recordId=' + recordId + rest;
+    url = AT_BASE + path;
   } else if (path && path.startsWith('?')) {
-    url = PROXY + path;
+    url = AT_BASE + path;
   }
-  const r = await fetch(url, { 
-    headers: { 'Content-Type': 'application/json' },
-    ...opts 
+  const r = await fetch(url, {
+    headers: {
+      'Authorization': `Bearer ${AIRTABLE_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    mode: 'cors',
+    ...opts
   });
   return r.json();
 }
@@ -1425,5 +1429,6 @@ async function submitNewJob() {
 }
 
 </script>
-</body>
-</html>
+
+
+</body></html>
